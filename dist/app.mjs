@@ -46,3 +46,12 @@ document.querySelector('.skip').addEventListener('click',e=>{e.preventDefault();
 window.addEventListener('hashchange',()=>render());window.addEventListener('storage',e=>{if(e.key===KEY){load();render(false);}});
 setInterval(()=>{const fresh=pruneOrders(orders);if(fresh.length!==orders.length){orders=fresh;save();if(location.hash.startsWith('#/account'))account();}updateTimers();},1000);
 window.addEventListener('pageshow',()=>{orders=pruneOrders(orders);save();});render();
+
+function showDemoNotice(){
+  const path=(location.hash.slice(1)||'/').split('?')[0];
+  if(path!=='/'||modal.open)return;
+  openModal('<p class="eyebrow">WELCOME TO NOMA DEMO</p><h2 id="modal-title">このサイトはデモ用サイトです</h2><p>ブラウザ操作を体験するための架空の通販サイトです。実際の購入・決済・発送は一切行われません。</p><p class="demo-callout">安心して、商品検索からデモ注文の確定までお試しください。</p><p class="note">ログインや個人情報の入力は不要です。表示される商品・価格・レビューはすべてデモデータです。</p><button class="btn full" id="start-demo">確認してデモをはじめる</button>');
+  $('#start-demo').onclick=()=>modal.close();
+}
+showDemoNotice();
+window.addEventListener('pageshow',event=>{if(event.persisted)showDemoNotice();});
